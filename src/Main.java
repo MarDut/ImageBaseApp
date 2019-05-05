@@ -22,7 +22,7 @@ public class Main {
         object.put("tags",tagList);
 
         System.out.println(object);
-
+        System.out.println("test 3");
 
     }
 }
