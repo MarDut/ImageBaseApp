@@ -23,5 +23,7 @@ public class Main {
 
         System.out.println(object);
 
+        System.out.println("Test");
+
     }
 }
