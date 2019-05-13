@@ -1,8 +1,9 @@
 [
   {
+    "id": 1,
     "path": "D:/Desktop/Image/D1302_2_047_0004_600.jpg",
     "author": "John Kowalski",
-    "place": "Warsaw",
+    "location": "Warsaw",
     "date": "2009-12-31",
     "tags": [
       "family",
