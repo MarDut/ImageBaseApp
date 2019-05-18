@@ -4,27 +4,24 @@ import java.util.List;
 
 public class Picture {
 
-
     private long id;
     private String path;
     private String author;
     private String location;
     private Date date;
     private List<String> tags;
-    private BufferedImage image;
+    private transient BufferedImage image;
+    //private static long currentId = 1;
 
-    public Picture() {
 
-    }
-
-    public Picture(long id, String path, String author, String location, Date date, List<String> tags, BufferedImage image) {
-        this.id = id;
+    public Picture(String path, String author, String location, Date date, List<String> tags, BufferedImage image) {
         this.path = path;
         this.author = author;
         this.location = location;
         this.date = date;
         this.tags = tags;
         this.image = image;
+    //    updateId();
     }
 
     public BufferedImage getImage() {
@@ -34,13 +31,9 @@ public class Picture {
     public void setImage(BufferedImage image) {
         this.image = image;
     }
-
+    // bez settera ID, ponieważ nie dajmemy możliwości go edytowania ,sami generujemy jego wartość
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getPath() {
@@ -82,4 +75,18 @@ public class Picture {
     public void setTags(List<String> tags) {
         this.tags = tags;
     }
+
+    public boolean tagsContain(String phrase){
+        for (String tag : getTags())
+        {
+            if(tag.contains(phrase)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+//    private void updateId(){
+//        currentId = id + 1;
+//    }
 }

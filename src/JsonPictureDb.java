@@ -1,5 +1,6 @@
 import com.google.gson.*;
 import java.io.*;
+import java.util.stream.*;
 
 import java.util.*;
 
@@ -18,77 +19,114 @@ public class JsonPictureDb implements PictureDb {
     @Override
     public void save(String filePath) throws IOException{
 
-        Gson gson = new Gson();
-        gson.toJson(this, new FileWriter(filePath));
+        Gson gson = createGson();
+        FileWriter writer = new FileWriter(filePath);
+        gson.toJson(this, writer);
+        writer.close();
     }
 
     @Override
     public List<Picture> getPictures() {
-        return null;
+        return pictures;
     }
 
+    // zwraca liste obrazow, ktore spelniaja kryterium wyszukiwania po tagu
     @Override
     public List<Picture> getPicturesByTag(String tag) {
-        return null;
+        return pictures.stream()
+                .filter(p -> p.tagsContain(tag))
+                .collect(Collectors.toList());
     }
 
     @Override
     public Picture getPicture(long id) {
-        return null;
+        return pictures.stream()
+                .filter(p -> p.getId() == id)
+                .collect(toSingleton());
     }
 
     @Override
-    public boolean removePicture(long id) {
+    public boolean removePicture(long id)
+    {
+        Picture picture = getPicture(id);
+
+        if(picture != null)
+        {
+            pictures.remove(picture);
+            return true;
+        }
         return false;
     }
 
     @Override
-    public List<Picture> getPicturesByPhrase(String phrase) {
+    public List<Picture> getPicturesByPhrase(String phrase)
+    {
+        return pictures.stream()
+                .filter(p -> (p.getId() + "").contains(phrase))
+                .filter(p -> (p.getPath()).contains(phrase))
+                .filter(p -> p.getAuthor().contains(phrase))
+                .filter(p -> p.getLocation().contains(phrase))
+                .filter(p -> p.getDate().toString().contains(phrase))
+                .filter(p -> p.tagsContain(phrase))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void sortByAuthor()
+    {
+        pictures.sort((p1, p2)-> p1.getAuthor().compareTo(p2.getAuthor()));
+    }
+
+    @Override
+    public void sortByLocation()
+    {
+        pictures.sort((p1, p2)-> p1.getLocation().compareTo(p2.getLocation()));
+    }
+
+    @Override
+    public void sortByDate()
+    {
+        pictures.sort((p1, p2)-> p1.getDate().compareTo(p2.getDate()));
+    }
+
+    @Override
+    public Picture getPictureWithMinAuthorValue()
+    {
+        // TODO: zastanowic sie co sie stanie jezeli bedzie dwoch takich samych autorow
+        return pictures.stream()
+                .min((p1, p2)-> p1.getAuthor().compareTo(p2.getAuthor()))
+                .orElse(null);
+    }
+
+    @Override
+    public Picture getPictureWithMaxAuthorValue()
+    {
+        return pictures.stream()
+                .max((p1, p2)-> p1.getAuthor().compareTo(p2.getAuthor()))
+                .orElse(null);
+    }
+
+    @Override
+    public Picture getPictureWithMinLocationValue()
+    {
         return null;
     }
 
     @Override
-    public void sortByAuthor() {
-
-    }
-
-    @Override
-    public void sortByLocation() {
-
-    }
-
-    @Override
-    public void sortByDate() {
-
-    }
-
-    @Override
-    public Picture getPictureWithMinAuthorValue() {
+    public Picture getPictureWithMaxLocationValue()
+    {
         return null;
     }
 
     @Override
-    public Picture getPictureWithMaxAuthorValue() {
+    public Picture getPictureWithMinDateValue()
+    {
         return null;
     }
 
     @Override
-    public Picture getPictureWithMinLocationValue() {
-        return null;
-    }
-
-    @Override
-    public Picture getPictureWithMaxLocationValue() {
-        return null;
-    }
-
-    @Override
-    public Picture getPictureWithMinDateValue() {
-        return null;
-    }
-
-    @Override
-    public Picture getPictureWithMaxDateValue() {
+    public Picture getPictureWithMaxDateValue()
+    {
         return null;
     }
 
@@ -104,7 +142,27 @@ public class JsonPictureDb implements PictureDb {
 
     // fabrykowanie obiektu klasy JsonPictureDb
     public static JsonPictureDb fromFile (String filePath) throws IOException{
-        Gson gson = new Gson();
-        return gson.fromJson(new FileReader(filePath), JsonPictureDb.class);
+            Gson gson = createGson();
+            return gson.fromJson(new FileReader(filePath), JsonPictureDb.class);
     }
+    // tworzenie obietków gson w konkretnym formacie, w razie zmiany formatu zmiana kodu w jendym miejscu
+    private static Gson createGson(){
+        return new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd")
+                .setPrettyPrinting()
+                .create();
+    }
+    // tworzenie metody colektora (na wlasnych warunkach) zamiast zwracac listy, zwracmay pojedynczy obiekt lub null
+    private static <T> Collector<T, ?, T> toSingleton() {
+        return Collectors.collectingAndThen(
+                Collectors.toList(),
+                list -> {
+                    if (list.size() != 1) {
+                        return null; // zamiast wyjatku metoda zwraca null, poniewaz testuje wartosc null zamist rzucac wyjatkiem
+                    }
+                    return list.get(0);
+                }
+        );
+    }
+
 }
