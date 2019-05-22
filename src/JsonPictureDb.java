@@ -109,35 +109,48 @@ public class JsonPictureDb implements PictureDb {
     @Override
     public Picture getPictureWithMinLocationValue()
     {
-        return null;
+        return pictures.stream()
+                .min((p1, p2)-> p1.getLocation().compareTo(p2.getLocation()))
+                .orElse(null);
     }
 
     @Override
     public Picture getPictureWithMaxLocationValue()
     {
-        return null;
+        return pictures.stream()
+                .max((p1, p2)-> p1.getLocation().compareTo(p2.getLocation()))
+                .orElse(null);
     }
 
     @Override
     public Picture getPictureWithMinDateValue()
     {
-        return null;
+        return pictures.stream()
+                .min((p1, p2)-> p1.getDate().compareTo(p2.getDate()))
+                .orElse(null);
     }
 
     @Override
     public Picture getPictureWithMaxDateValue()
     {
-        return null;
+        return pictures.stream()
+                .max((p1, p2)-> p1.getDate().compareTo(p2.getDate()))
+                .orElse(null);
     }
 
     @Override
-    public List<Picture> getPicturesLessThanDate(Date date) {
-        return null;
+    public List<Picture> getPicturesLessThanDate(Date date)
+    {
+        return pictures.stream()
+                .filter(p -> p.getDate().before(date))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<Picture> getPicturesGreaterThanDate(Date date) {
-        return null;
+        return pictures.stream()
+                .filter(p -> p.getDate().after(date))
+                .collect(Collectors.toList());
     }
 
     // fabrykowanie obiektu klasy JsonPictureDb
@@ -152,8 +165,9 @@ public class JsonPictureDb implements PictureDb {
                 .setPrettyPrinting()
                 .create();
     }
-    // tworzenie metody colektora (na wlasnych warunkach) zamiast zwracac listy, zwracmay pojedynczy obiekt lub null
-    private static <T> Collector<T, ?, T> toSingleton() {
+    // tworzenie metody kolektora (na wlasnych warunkach) zamiast zwracac listy, zwracmay pojedynczy obiekt lub null
+    private static <T> Collector<T, ?, T> toSingleton()
+    {
         return Collectors.collectingAndThen(
                 Collectors.toList(),
                 list -> {
