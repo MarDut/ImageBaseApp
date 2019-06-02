@@ -12,7 +12,9 @@ public class JsonPictureDb implements PictureDb {
         pictures = new ArrayList<>();
     }
 
-    public void add(Picture picture){
+    public void add(Picture picture)
+    {
+        picture.setId(geterateNextId());
         pictures.add(picture);
     }
 
@@ -62,13 +64,13 @@ public class JsonPictureDb implements PictureDb {
     public List<Picture> getPicturesByPhrase(String phrase)
     {
         return pictures.stream()
-                .filter(p -> (p.getId() + "").contains(phrase))
-                .filter(p -> (p.getPath()).contains(phrase))
+//                .filter(p -> (p.getId() + "").contains(phrase))
+//                .filter(p -> (p.getPath()).contains(phrase))
                 .filter(p -> p.getAuthor().contains(phrase))
-                .filter(p -> p.getLocation().contains(phrase))
-                .filter(p -> p.getDate().toString().contains(phrase))
-                .filter(p -> p.tagsContain(phrase))
-                .collect(Collectors.toList());
+//                .filter(p -> p.getLocation().contains(phrase))
+//                .filter(p -> p.getDate().toString().contains(phrase))
+//                .filter(p -> p.tagsContain(phrase))
+                .collect(Collectors.toList()); //tutaj się tworzy lista (zamień to wszytko na listę, co zostało wyfiltrowane / strumien sie zamienia na liste)
     }
 
     @Override
@@ -179,4 +181,11 @@ public class JsonPictureDb implements PictureDb {
         );
     }
 
+    private long geterateNextId()
+    {
+        return pictures.stream()
+                .max(Comparator.comparing(Picture::getId))
+                .map(Picture::getId)
+                .orElse(0L) + 1;
+    }
 }
