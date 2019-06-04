@@ -7,5 +7,6 @@ public class Main {
         Controller controller = new Controller(view);
 
         view.show(controller);
+        //TODO: wielkość liter w wyszukiwarce - toUpperCase()
     }
 }

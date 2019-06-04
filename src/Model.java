@@ -17,6 +17,12 @@ public class Model extends DefaultTableModel
         updateData(ModelConverter.toArray2D(pictures));
     }
 
+    public void filterByTag(String phrase)
+    {
+        List<Picture> pictures = db.getPicturesByTag(phrase);
+        updateData(ModelConverter.toArray2D(pictures));
+    }
+
     private void updateData(Object[][] data)
     {
         setDataVector(data, new Object[]

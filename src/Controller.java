@@ -16,6 +16,28 @@ public class Controller implements ActionListener {
     // zdarzenia z GUI
     @Override
     public void actionPerformed(ActionEvent e) {
-        model.filterByPhrase(view.getSearchPhrase());
+       if(e.getSource()==view.getSearchButton())
+       {
+           onSearchButtonClick();
+       }
+       else if (e.getSource()==view.getShowAllButton())
+       {
+           onShowAllButtonClick();
+       }
+    }
+
+    private void onSearchButtonClick(){
+        if(view.isSearchByPhraseRadioButtonSelected())
+        {
+            model.filterByPhrase(view.getSearchPhrase());
+        }
+        else if (view.isSearchByTagRadioButtonSelected())
+        {
+            model.filterByTag(view.getSearchPhrase());
+        }
+    }
+
+    private void onShowAllButtonClick(){
+        model.filterByPhrase("");
     }
 }
