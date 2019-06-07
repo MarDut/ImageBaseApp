@@ -1,8 +1,12 @@
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.event.*;
+import java.io.IOException;
 
-public class Controller implements ActionListener {
+public class Controller extends WindowAdapter implements ActionListener, ListSelectionListener, KeyListener {
+
+    public final static String DATA_FILE_PATH = "./Pictures.json";
 
     private Model model;
     private View view;
@@ -24,6 +28,62 @@ public class Controller implements ActionListener {
        {
            onShowAllButtonClick();
        }
+       else if(e.getSource()==view.getSortByAuthor())
+       {
+           onSortByAuthorButtonClick();
+       }
+    }
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        JTable table = view.getTable();
+        int index = table.getSelectedRow();
+
+        if(index != -1)
+        {
+            String picturePath = model.getPicturePath(index);
+           try
+           {
+               view.setImage(picturePath);
+           } catch (IOException ex)
+           {
+               ex.printStackTrace();
+           }
+        }
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e)
+    {
+        if(e.getKeyCode()==127)
+        {
+            JTable table = view.getTable();
+            int index = table.getSelectedRow();
+
+            model.removeByIndex(index);
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e)
+    {
+        try
+        {
+            model.save(DATA_FILE_PATH);
+        } catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
 
     private void onSearchButtonClick(){
@@ -40,4 +100,11 @@ public class Controller implements ActionListener {
     private void onShowAllButtonClick(){
         model.filterByPhrase("");
     }
+
+    private void  onSortByAuthorButtonClick(){
+        model.sortByAuthor();
+    }
+
+
+
 }

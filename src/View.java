@@ -1,10 +1,18 @@
 import javafx.scene.control.RadioButton;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.border.*;
 import javax.swing.*;
 
 public class View {
+
+    public final static String NO_IMAGE_FILE_PATH = "./Media/image-not-available.jpg";
 
     private Model model;
     private JFrame mainFrame;
@@ -15,6 +23,8 @@ public class View {
     private JRadioButton searchByPhraseRadioButton;
     private JRadioButton searchByTagRadioButton;
     private JLabel imageLabel;
+    private JButton sortByAuthor;
+
 
 
     public View(Model model)
@@ -26,8 +36,12 @@ public class View {
         searchTextField = new JTextField(35);
         searchButton = new JButton("Filter");
         table = new JTable();
+        table.addKeyListener(controller);
         showAllButton = new JButton("Show all");
+        sortByAuthor = new JButton("Sort by Author");
+        sortByAuthor.addActionListener(controller);
         table.setModel(model);
+        table.getSelectionModel().addListSelectionListener(controller);
         searchButton.addActionListener(controller);
         showAllButton.addActionListener(controller);
 
@@ -44,22 +58,26 @@ public class View {
         headerPanel.add(searchTextField);
         headerPanel.add(searchButton);
         headerPanel.add(showAllButton);
+        headerPanel.add(sortByAuthor);
         headerPanel.add(radioButtonPanel);
 
         JScrollPane tablePanel = new JScrollPane(table);
         tablePanel.setPreferredSize(new Dimension(1000,500));
 
         imageLabel = new JLabel();
-        imageLabel.setPreferredSize(new Dimension(200,200));
-
+        JPanel imagePanel = new JPanel();
+        imagePanel.add(imageLabel);
 
         JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, headerPanel, tablePanel);
         splitPane.setDividerLocation(35);
         splitPane.setEnabled(false);
 
         mainFrame = new JFrame("Image Base App");
+        mainFrame.addWindowListener(controller);
+        mainFrame.setLayout(new GridLayout(2,1));
+        mainFrame.setMinimumSize(new Dimension(900,700));
         mainFrame.add(splitPane);
-        mainFrame.add(imageLabel);
+        mainFrame.add(imagePanel);
         mainFrame.pack();
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setLocationRelativeTo(null); // formatka wyswioetli sie na srodku ekranu
@@ -92,4 +110,34 @@ public class View {
     {
         return searchByTagRadioButton.isSelected();
     }
+
+    public void setImage(String imagePath) throws IOException
+    {
+        BufferedImage image = loadImage(imagePath);
+        imageLabel.setIcon(new ImageIcon(image));
+    }
+
+    public JTable getTable(){
+        return table;
+    }
+
+    public JButton getSortByAuthor() {
+        return sortByAuthor;
+    }
+
+    private BufferedImage loadImage(String imagePath) throws IOException
+    {
+        BufferedImage image;
+        try
+        {
+            image = ImageIO.read(new File(imagePath));
+        }
+        catch (IOException e)
+        {
+            image = ImageIO.read(new File(NO_IMAGE_FILE_PATH));
+        }
+        return image;
+    }
+
+
 }

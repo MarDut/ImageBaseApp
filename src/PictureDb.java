@@ -21,7 +21,7 @@ ok wyszukiwanie obrazów dla których data jest większa od progu podanego przez
     List<Picture> getPictures();
     List<Picture> getPicturesByTag(String tag);
     Picture getPicture(long id);
-    boolean removePicture(long id);
+    boolean removePictureByIndex(int index);
     List<Picture> getPicturesByPhrase(String phrase);
     void sortByAuthor();
     void sortByLocation();

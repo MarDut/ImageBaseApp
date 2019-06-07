@@ -48,16 +48,19 @@ public class JsonPictureDb implements PictureDb {
     }
 
     @Override
-    public boolean removePicture(long id)
+    public boolean removePictureByIndex(int index)
     {
-        Picture picture = getPicture(id);
-
-        if(picture != null)
+        try
         {
+            Picture picture = pictures.get(index);
+
             pictures.remove(picture);
             return true;
         }
-        return false;
+        catch(IndexOutOfBoundsException ie)
+        {
+            return false;
+        }
     }
 
     @Override
