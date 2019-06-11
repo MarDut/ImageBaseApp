@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.*;
 import java.io.IOException;
 
@@ -31,6 +32,14 @@ public class Controller extends WindowAdapter implements ActionListener, ListSel
        else if(e.getSource()==view.getSortByAuthor())
        {
            onSortByAuthorButtonClick();
+       }
+       else if(e.getSource()==view.getMenuOpenFile())
+       {
+           onMenuOpenFileClick();
+       }
+       else if(e.getSource()==view.getMenuSaveFile())
+       {
+           onMenuSaveFileClick();
        }
     }
 
@@ -103,6 +112,48 @@ public class Controller extends WindowAdapter implements ActionListener, ListSel
 
     private void  onSortByAuthorButtonClick(){
         model.sortByAuthor();
+    }
+
+    private void onMenuOpenFileClick()
+    {
+       JFileChooser openFileDialog = new JFileChooser();
+
+       openFileDialog.setFileFilter(new FileNameExtensionFilter("JSON File", "json"));
+       //metoda blokująca, dopóki user nie wciśnie ok lub X
+       if(openFileDialog.showOpenDialog(null)==JFileChooser.APPROVE_OPTION)
+       {
+           try
+           {
+               model.open(openFileDialog.getSelectedFile().getPath());
+           } catch (Exception e)
+           {
+               JOptionPane.showMessageDialog(null, "Error occured:" + System.lineSeparator() + e.getMessage());
+           }
+       }
+    }
+
+    private void onMenuSaveFileClick()
+    {
+        JFileChooser saveFileDialog = new JFileChooser();
+
+        saveFileDialog.setFileFilter(new FileNameExtensionFilter("JSON File", "json"));
+        if(saveFileDialog.showSaveDialog(null)==JFileChooser.APPROVE_OPTION)
+        {
+            try
+            {
+                String filename = saveFileDialog.getSelectedFile().getPath();
+
+                if (!filename .endsWith(".json")) {
+                    filename += ".json";
+                }
+
+                model.save(filename);
+            }
+            catch (Exception e)
+            {
+                JOptionPane.showMessageDialog(null, "Error occured:" + System.lineSeparator() + e.getMessage());
+            }
+        }
     }
 
 

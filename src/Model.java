@@ -51,6 +51,14 @@ public class Model extends DefaultTableModel
         db.save(path);
     }
 
+    public void open(String path) throws IOException
+    {
+        db = JsonPictureDb.fromFile(path);
+        refreshData();
+
+    }
+
+
     private void updateData(Object[][] data)
     {
         this.data = data;

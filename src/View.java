@@ -24,7 +24,10 @@ public class View {
     private JRadioButton searchByTagRadioButton;
     private JLabel imageLabel;
     private JButton sortByAuthor;
-
+    private JMenuBar menuBar;
+    private JMenu menuFile;
+    private JMenuItem menuOpenFile;
+    private JMenuItem menuSaveFile;
 
 
     public View(Model model)
@@ -72,7 +75,19 @@ public class View {
         splitPane.setDividerLocation(35);
         splitPane.setEnabled(false);
 
+        // menu bar
+        menuBar = new JMenuBar();
+        menuFile = new JMenu("File");
+        menuBar.add(menuFile);
+        menuOpenFile = new JMenuItem("Open");
+        menuSaveFile = new JMenuItem("Save");
+        menuOpenFile.addActionListener(controller);
+        menuSaveFile.addActionListener(controller);
+        menuFile.add(menuOpenFile);
+        menuFile.add(menuSaveFile);
+
         mainFrame = new JFrame("Image Base App");
+        mainFrame.setJMenuBar(menuBar);
         mainFrame.addWindowListener(controller);
         mainFrame.setLayout(new GridLayout(2,1));
         mainFrame.setMinimumSize(new Dimension(900,700));
@@ -83,6 +98,7 @@ public class View {
         mainFrame.setLocationRelativeTo(null); // formatka wyswioetli sie na srodku ekranu
         mainFrame.setExtendedState( mainFrame.getExtendedState() | JFrame.MAXIMIZED_BOTH );
         mainFrame.setVisible(true);
+
     };
 
     public Model getModel(){
@@ -123,6 +139,14 @@ public class View {
 
     public JButton getSortByAuthor() {
         return sortByAuthor;
+    }
+
+    public JMenuItem getMenuOpenFile() {
+        return menuOpenFile;
+    }
+
+    public JMenuItem getMenuSaveFile() {
+        return menuSaveFile;
     }
 
     private BufferedImage loadImage(String imagePath) throws IOException
