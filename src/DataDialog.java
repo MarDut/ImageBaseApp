@@ -13,14 +13,87 @@ public class DataDialog extends JDialog {
     private JTextField dateTextField;
     private JTextField tagsTextField;
     private boolean isOkButtonClicked;
+    private Picture picture;
+
     public DataDialog() {
+        initialize();
+    }
+
+    public DataDialog(Picture picture)
+    {
+        this.picture = picture;
+
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+
+        initialize();
+
+        pathTextField.setText(picture.getPath());
+        authorTextField.setText(picture.getAuthor());
+        locaationTextField.setText(picture.getLocation());
+        dateTextField.setText(f.format(picture.getDate()));
+        tagsTextField.setText(String.join(", " , picture.getTags()));
+    }
+
+
+    public boolean showDialog()
+    {
+        pack();
+        setVisible(true);
+        return isOkButtonClicked;
+    }
+
+    public Picture getPicture() throws ParseException
+    {
+        Picture picture = new Picture();
+
+        updatePicture(picture);
+
+        return picture;
+    }
+
+    private void updatePicture(Picture picture) throws ParseException
+    {
+        picture.setPath(pathTextField.getText().trim());
+        picture.setAuthor(authorTextField.getText().trim());
+        picture.setLocation(locaationTextField.getText().trim());
+        picture.setDate(dateTextField.getText().trim());
+        picture.setTags(tagsTextField.getText().trim());
+    }
+
+    private void onOK() {
+        // dodawanie walidacji tutaj
+        isOkButtonClicked = true;
+
+        if(picture != null)
+        {
+            try
+            {
+                updatePicture(picture);
+            }
+            catch (Exception e )
+            {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
+        }
+
+        dispose();
+    }
+
+    private void onCancel() {
+        isOkButtonClicked = false;
+        dispose();
+    }
+
+    private void initialize()
+    {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
         setLocationRelativeTo(null);
 
         buttonOK.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+
+            public void actionPerformed(ActionEvent e)  {
                 onOK();
             }
         });
@@ -45,36 +118,5 @@ public class DataDialog extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    }
-
-    public boolean showDialog()
-    {
-        pack();
-        setVisible(true);
-        return isOkButtonClicked;
-    }
-
-    public Picture getPicture() throws ParseException
-    {
-        Picture picture = new Picture();
-
-        picture.setPath(pathTextField.getText().trim());
-        picture.setAuthor(authorTextField.getText().trim());
-        picture.setLocation(locaationTextField.getText().trim());
-        picture.setDate(dateTextField.getText().trim());
-        picture.setTags(tagsTextField.getText().trim());
-
-        return picture;
-    }
-
-    private void onOK() {
-        // dodawanie walidacji tutaj
-        isOkButtonClicked = true;
-        dispose();
-    }
-
-    private void onCancel() {
-        isOkButtonClicked = false;
-        dispose();
     }
 }

@@ -48,6 +48,38 @@ public class Model extends DefaultTableModel
         refreshData();
     }
 
+    public void showAuthorMinValue(){
+        Picture picture = db.getPictureWithMinLocationValue();
+        updateData(ModelConverter.toArray2D(picture));
+    }
+
+    public void showLocationMinValue(){
+        Picture picture = db.getPictureWithMinLocationValue();
+        updateData(ModelConverter.toArray2D(picture));
+
+    }
+
+    public void showAuthorMaxValue(){
+        Picture picture =  db.getPictureWithMaxAuthorValue();
+        updateData(ModelConverter.toArray2D(picture));
+    }
+
+    public void showDateMinValue(){
+        Picture picture =  db.getPictureWithMinDateValue();
+        updateData(ModelConverter.toArray2D(picture));
+    }
+
+    public void showLocationMaxValue(){
+        Picture picture =  db.getPictureWithMaxLocationValue();
+        updateData(ModelConverter.toArray2D(picture));
+    }
+
+    public void showDateMaxValue(){
+        Picture picture =  db.getPictureWithMaxDateValue();
+        updateData(ModelConverter.toArray2D(picture));
+    }
+
+
     //TODO: Następne sortowania / zaczyna się od widoku -> controller (listener (obsluga zdarzeń)) -> model
 
     public String getPicturePath(int index)
@@ -75,6 +107,15 @@ public class Model extends DefaultTableModel
         refreshData();
     }
 
+    public Picture getPictureByIndex(int index)
+    {
+        return db.getPictures().get(index);
+    }
+
+    public void refreshData(){
+        List<Picture> pictures = db.getPictures();
+        updateData(ModelConverter.toArray2D(pictures));
+    }
 
     private void updateData(Object[][] data)
     {
@@ -88,8 +129,5 @@ public class Model extends DefaultTableModel
                 });
     }
 
-    private void refreshData(){
-        List<Picture> pictures = db.getPictures();
-        updateData(ModelConverter.toArray2D(pictures));
-    }
+
 }

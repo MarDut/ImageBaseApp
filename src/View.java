@@ -22,7 +22,6 @@ public class View {
     private JRadioButton searchByPhraseRadioButton;
     private JRadioButton searchByTagRadioButton;
     private JLabel imageLabel;
-    private JButton sortByAuthor;
     private JMenuBar menuBar;
     private JMenu menuFile;
     private JMenu menuSort;
@@ -34,6 +33,12 @@ public class View {
     private JMenuItem menuSortByDate;
     private JMenuItem menuAdd;
     private JMenuItem menuEdit;
+    private JMenuItem menuMinAuthor;
+    private JMenuItem menuMinLocation;
+    private JMenuItem menuMinDate;
+    private JMenuItem menuMaxAuthor;
+    private JMenuItem menuMaxLocation;
+    private JMenuItem menuMaxDate;
 
 
 
@@ -48,8 +53,6 @@ public class View {
         table = new JTable();
         table.addKeyListener(controller);
         showAllButton = new JButton("Show all");
-        sortByAuthor = new JButton("Sort by Author");
-        sortByAuthor.addActionListener(controller);
         table.setModel(model);
         table.getSelectionModel().addListSelectionListener(controller);
         searchButton.addActionListener(controller);
@@ -68,7 +71,6 @@ public class View {
         headerPanel.add(searchTextField);
         headerPanel.add(searchButton);
         headerPanel.add(showAllButton);
-        headerPanel.add(sortByAuthor);
         headerPanel.add(radioButtonPanel);
 
         JScrollPane tablePanel = new JScrollPane(table);
@@ -96,17 +98,40 @@ public class View {
         menuFile.add(menuSaveFile);
 
         // sort
-        menuSort = new JMenu("Sort by");
+        menuSort = new JMenu("Actions");
         menuBar.add(menuSort);
-        menuSortByAuthor = new JMenuItem("author");
-        menuSortByLocation = new JMenuItem("location");
-        menuSortByDate = new JMenuItem("date");
+        menuSortByAuthor = new JMenuItem("sort by author");
+        menuSortByLocation = new JMenuItem("sort by location");
+        menuSortByDate = new JMenuItem("sort by date");
         menuSortByAuthor.addActionListener(controller);
         menuSortByLocation.addActionListener(controller);
         menuSortByDate.addActionListener(controller);
         menuSort.add(menuSortByAuthor);
         menuSort.add(menuSortByLocation);
         menuSort.add(menuSortByDate);
+
+        // min max
+        menuMinAuthor = new JMenuItem("show min author");
+        menuMinLocation = new JMenuItem("show min location");
+        menuMinDate = new JMenuItem("show min date");
+        menuMaxAuthor = new JMenuItem("show max author");
+        menuMaxLocation = new JMenuItem("show max location");
+        menuMaxDate = new JMenuItem("show max date");
+
+        menuMinAuthor.addActionListener(controller);
+        menuMinLocation.addActionListener(controller);
+        menuMinDate.addActionListener(controller);
+        menuMaxAuthor.addActionListener(controller);
+        menuMaxLocation.addActionListener(controller);
+        menuMaxDate.addActionListener(controller);
+
+        menuSort.add(menuMinAuthor);
+        menuSort.add(menuMinLocation);
+        menuSort.add(menuMinDate);
+        menuSort.add(menuMaxAuthor);
+        menuSort.add(menuMaxLocation);
+        menuSort.add(menuMaxDate);
+
 
         // data
         menuData = new JMenu("Data");
@@ -169,10 +194,6 @@ public class View {
         return table;
     }
 
-    public JButton getSortByAuthor() {
-        return sortByAuthor;
-    }
-
     public JMenuItem getMenuOpenFile() {
         return menuOpenFile;
     }
@@ -199,6 +220,30 @@ public class View {
 
     public JMenuItem getMenuEdit() {
         return menuEdit;
+    }
+
+    public JMenuItem getMenuMinAuthor() {
+        return menuMinAuthor;
+    }
+
+    public JMenuItem getMenuMinLocation() {
+        return menuMinLocation;
+    }
+
+    public JMenuItem getMenuMinDate() {
+        return menuMinDate;
+    }
+
+    public JMenuItem getMenuMaxAuthor() {
+        return menuMaxAuthor;
+    }
+
+    public JMenuItem getMenuMaxLocation() {
+        return menuMaxLocation;
+    }
+
+    public JMenuItem getMenuMaxDate() {
+        return menuMaxDate;
     }
 
     private BufferedImage loadImage(String imagePath) throws IOException

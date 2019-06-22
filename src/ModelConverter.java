@@ -13,6 +13,8 @@ public class ModelConverter {
 
     public static Object[][] toArray2D(Picture picture)
     {
-        return new Object[][]{{picture.toVector()}};
+        Object[][] tab = new Object[1][1];
+        tab[0] = picture.toVector();
+        return tab;
     }
 }

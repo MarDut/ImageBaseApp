@@ -80,13 +80,13 @@ public class JsonPictureDb implements PictureDb {
     @Override
     public void sortByAuthor()
     {
-        pictures.sort((p1, p2)-> p1.getAuthor().compareTo(p2.getAuthor()));
+        pictures.sort((p1, p2)-> p1.getAuthor().toUpperCase().compareTo(p2.getAuthor().toUpperCase()));
     }
 
     @Override
     public void sortByLocation()
     {
-        pictures.sort((p1, p2)-> p1.getLocation().compareTo(p2.getLocation()));
+        pictures.sort((p1, p2)-> p1.getLocation().toUpperCase().compareTo(p2.getLocation().toUpperCase()));
     }
 
     @Override
@@ -98,9 +98,8 @@ public class JsonPictureDb implements PictureDb {
     @Override
     public Picture getPictureWithMinAuthorValue()
     {
-        // TODO: zastanowic sie co sie stanie jezeli bedzie dwoch takich samych autorow
         return pictures.stream()
-                .min((p1, p2)-> p1.getAuthor().compareTo(p2.getAuthor()))
+                .min((p1, p2)-> p1.getAuthor().toUpperCase().compareTo(p2.getAuthor().toUpperCase()))
                 .orElse(null);
     }
 
@@ -108,7 +107,7 @@ public class JsonPictureDb implements PictureDb {
     public Picture getPictureWithMaxAuthorValue()
     {
         return pictures.stream()
-                .max((p1, p2)-> p1.getAuthor().compareTo(p2.getAuthor()))
+                .max((p1, p2)-> p1.getAuthor().toUpperCase().compareTo(p2.getAuthor().toUpperCase()))
                 .orElse(null);
     }
 
@@ -116,7 +115,7 @@ public class JsonPictureDb implements PictureDb {
     public Picture getPictureWithMinLocationValue()
     {
         return pictures.stream()
-                .min((p1, p2)-> p1.getLocation().compareTo(p2.getLocation()))
+                .min((p1, p2)-> p1.getLocation().toUpperCase().compareTo(p2.getLocation().toUpperCase()))
                 .orElse(null);
     }
 
@@ -124,7 +123,7 @@ public class JsonPictureDb implements PictureDb {
     public Picture getPictureWithMaxLocationValue()
     {
         return pictures.stream()
-                .max((p1, p2)-> p1.getLocation().compareTo(p2.getLocation()))
+                .max((p1, p2)-> p1.getLocation().toUpperCase().compareTo(p2.getLocation().toUpperCase()))
                 .orElse(null);
     }
 
