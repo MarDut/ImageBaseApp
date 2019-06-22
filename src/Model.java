@@ -31,6 +31,18 @@ public class Model extends DefaultTableModel
         refreshData();
     }
 
+    public void sortByLocation()
+    {
+        db.sortByLocation();
+        refreshData();
+    }
+
+    public void sortByDate()
+    {
+        db.sortByDate();
+        refreshData();
+    }
+
     public void removeByIndex(int index){
         db.removePictureByIndex(index);
         refreshData();
@@ -55,7 +67,12 @@ public class Model extends DefaultTableModel
     {
         db = JsonPictureDb.fromFile(path);
         refreshData();
+    }
 
+    public void addPicture(Picture picture)
+    {
+        db.add(picture);
+        refreshData();
     }
 
 

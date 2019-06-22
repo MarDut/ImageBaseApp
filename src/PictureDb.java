@@ -34,6 +34,7 @@ ok wyszukiwanie obrazów dla których data jest większa od progu podanego przez
     Picture getPictureWithMaxDateValue();
     List<Picture> getPicturesLessThanDate(Date date);
     List<Picture> getPicturesGreaterThanDate(Date date);
+    void add(Picture picture);
 
 }
 

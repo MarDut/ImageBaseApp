@@ -1,6 +1,9 @@
 import javax.imageio.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +20,10 @@ public class Picture {
     private List<String> tags;
 
 
+    public Picture()
+    {
+
+    }
 
     public Picture(String path, String author, String location, Date date, List<String> tags)
     {
@@ -68,13 +75,26 @@ public class Picture {
         this.date = date;
     }
 
+    public void setDate(String date) throws ParseException
+    {
+        SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
+        this.date = s.parse(date);
+    }
+
     public List<String> getTags() {
         return tags;
     }
 
+
     public void setTags(List<String> tags) {
         this.tags = tags;
     }
+
+    public void setTags(String tags) {
+        String[] array = tags.split(", ");
+        setTags(Arrays.asList(array));
+    }
+
 
     public boolean tagsContain(String phrase){
         for (String tag : getTags())

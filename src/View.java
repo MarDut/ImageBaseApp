@@ -1,5 +1,4 @@
 import javafx.scene.control.RadioButton;
-
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -26,8 +25,16 @@ public class View {
     private JButton sortByAuthor;
     private JMenuBar menuBar;
     private JMenu menuFile;
+    private JMenu menuSort;
+    private JMenu menuData;
     private JMenuItem menuOpenFile;
     private JMenuItem menuSaveFile;
+    private JMenuItem menuSortByAuthor;
+    private JMenuItem menuSortByLocation;
+    private JMenuItem menuSortByDate;
+    private JMenuItem menuAdd;
+    private JMenuItem menuEdit;
+
 
 
     public View(Model model)
@@ -75,7 +82,9 @@ public class View {
         splitPane.setDividerLocation(35);
         splitPane.setEnabled(false);
 
-        // menu bar
+            // MENU BAR
+
+        // file
         menuBar = new JMenuBar();
         menuFile = new JMenu("File");
         menuBar.add(menuFile);
@@ -85,6 +94,29 @@ public class View {
         menuSaveFile.addActionListener(controller);
         menuFile.add(menuOpenFile);
         menuFile.add(menuSaveFile);
+
+        // sort
+        menuSort = new JMenu("Sort by");
+        menuBar.add(menuSort);
+        menuSortByAuthor = new JMenuItem("author");
+        menuSortByLocation = new JMenuItem("location");
+        menuSortByDate = new JMenuItem("date");
+        menuSortByAuthor.addActionListener(controller);
+        menuSortByLocation.addActionListener(controller);
+        menuSortByDate.addActionListener(controller);
+        menuSort.add(menuSortByAuthor);
+        menuSort.add(menuSortByLocation);
+        menuSort.add(menuSortByDate);
+
+        // data
+        menuData = new JMenu("Data");
+        menuBar.add(menuData);
+        menuAdd = new JMenuItem("add");
+        menuEdit = new JMenuItem("edit");
+        menuAdd.addActionListener(controller);
+        menuEdit.addActionListener(controller);
+        menuData.add(menuAdd);
+        menuData.add(menuEdit);
 
         mainFrame = new JFrame("Image Base App");
         mainFrame.setJMenuBar(menuBar);
@@ -147,6 +179,26 @@ public class View {
 
     public JMenuItem getMenuSaveFile() {
         return menuSaveFile;
+    }
+
+    public JMenuItem getMenuSortByAuthor() {
+        return menuSortByAuthor;
+    }
+
+    public JMenuItem getMenuSortByLocation() {
+        return menuSortByLocation;
+    }
+
+    public JMenuItem getMenuSortByDate() {
+        return menuSortByDate;
+    }
+
+    public JMenuItem getMenuAdd() {
+        return menuAdd;
+    }
+
+    public JMenuItem getMenuEdit() {
+        return menuEdit;
     }
 
     private BufferedImage loadImage(String imagePath) throws IOException

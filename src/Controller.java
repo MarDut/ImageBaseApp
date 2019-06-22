@@ -4,6 +4,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.*;
 import java.io.IOException;
+import java.text.ParseException;
 
 public class Controller extends WindowAdapter implements ActionListener, ListSelectionListener, KeyListener {
 
@@ -40,6 +41,14 @@ public class Controller extends WindowAdapter implements ActionListener, ListSel
        else if(e.getSource()==view.getMenuSaveFile())
        {
            onMenuSaveFileClick();
+       }
+       else if(e.getSource()==view.getMenuAdd())
+       {
+           onMenuAddButtonClick();
+       }
+       else if(e.getSource()==view.getMenuEdit())
+       {
+           onMenuEditButtonClick();
        }
     }
 
@@ -155,6 +164,28 @@ public class Controller extends WindowAdapter implements ActionListener, ListSel
             }
         }
     }
+
+    private void onMenuAddButtonClick()
+    {
+        DataDialog dataDialog = new DataDialog();
+
+        if(dataDialog.showDialog())
+        {
+            try {
+                model.addPicture(dataDialog.getPicture());
+            }
+            catch(Exception e)
+            {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
+        }
+    }
+
+    private void onMenuEditButtonClick()
+    {
+
+    }
+
 
 
 
